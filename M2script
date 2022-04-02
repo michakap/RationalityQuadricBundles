@@ -1,0 +1,31 @@
+CheckDom = (r,l)-> 
+(k=4-l;
+n=3;
+S=ZZ[x_1..x_(n*r*(r+k))];
+DS=ZZ[y_1..y_(r*l)];
+R=ZZ[t_1..t_n];
+T=S**DS**R;
+for j from 1 to 5 do
+(
+if l==0 then K=0 else K=genericMatrix(DS,l,r);
+M=random(R^r, R^{l:-2},Height=>2);
+ZD=random(R^l, R^{l:-2},Height=>2);
+Z=ZD+transpose ZD;
+if l==0 then B=0 else B= (transpose((map(T,DS)) K))*((map(T,R)) Z)*((map(T,DS)) K);
+if l==0 then F=0 else F=( ((map(T,R)) M))*((map(T,DS)) K);
+if l==0 then G=0 else G=F+transpose F;
+N1=genericMatrix(S,n*r,r+k);
+V=(vars R)**diagonalMatrix(for i from 0 to r-1 list 1);
+N=((map(T,R))V)*((map(T,S))N1);
+etaKN=(N*(transpose N))+G+B;
+IKN=mingens  ideal flatten etaKN;
+DKN1=mingens ideal flatten diff(matrix{{t_1..t_n}},diff(matrix{{t_1..t_n}},IKN));
+DKN=(map(S**DS,T)) DKN1;
+JDKN=jacobian DKN;
+JDKNx=(map(ZZ,ring JDKN, random(ZZ^1,ZZ^(n*r*(r+k)+r*l))))JDKN;
+ds=numgens source JDKNx;
+dt=numgens target JDKNx;
+LM=for i from 1 to 5 list det(random((ring JDKNx)^ds,(ring JDKNx)^dt, Height=>2)*JDKNx;
+g_j=gcd(LM));
+);
+return factor gcd(g_1,g_2,g_3,g_4,g_5))
